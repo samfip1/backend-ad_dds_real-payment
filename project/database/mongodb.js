@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
-const mongooseDBURL = "mongodb+srv://samfip:bKIAxtd3OVqJ2lQt@samfip.gdqd29e.mongodb.net/advanced-backend";
+import dotenv from "dotenv";
+dotenv.config();
+
+
+const mongooseDBURL = process.env.mongooseDBURL ;
+
 
 const connectDB = async () => {
     try {

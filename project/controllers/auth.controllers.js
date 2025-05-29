@@ -1,62 +1,59 @@
 import mongoose from "mongoose";
-import User from "../models/user.model";
-import { bcrypt } from "bcryptjs";
-const jwt = require('jsonwebtoken')
+import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+import dotenv from "dotenv";
+dotenv.config();
+
 // req -> it is body which comes from the user
-const jwt_secret = "349805ytrghwu67894tg5uwei9ghwe"
-export const singup = async (req, res) => {
-    const sesson = await mongoose.startSession();   // start session
-    sesson.startTransaction();  // start transaction
-    // this will do everything or do nothing if on halfway it will reverse it
+const jwt_secret = process.env.jwt_secret;
+console.log(jwt_secret);
+export const Singup = async (req, res) => {
+    const session = await mongoose.startSession(); // ✅ Correct name
+    session.startTransaction();
 
     try {
-        const {name , email , password} = req.body;
+        const { name, email, password } = req.body;
 
-        const existingUser = await User.findOne({email});
-        if(existingUser) {
-            const error = new Error('User already exist');
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            const error = new Error("User already exists");
             error.statusCode = 409;
             throw error;
         }
 
-        // hashing password
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create(
-            [
-                {name , email, password: hashPassword}
-            ],
-            {sesson}
-        )
+            [{ name, email, password: hashPassword }],
+            { session } // ✅ Fix here
+        );
 
-        const token = jwt.sign({userId : newUser[0]._id}, jwt_secret);
+        const token = jwt.sign({ userId: newUser[0]._id }, jwt_secret);
 
-
-        await sesson.commitTransaction();
-        sesson.endSession();
+        await session.commitTransaction();
+        session.endSession();
 
         res.status(201).json({
             success: true,
-            message : 'USer successfully created',
-            data : {
+            message: "User successfully created",
+            data: {
                 token,
                 user: newUser[0],
-            }
-        })
+            },
+        });
     } catch (error) {
-        await sesson.abortTransaction();
-        sesson.endSession();
+        await session.abortTransaction();
+        session.endSession();
+        res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Something went wrong",
+        });
     }
-}
+};
 
+export const Signin = async (req, res) => {};
 
-export const signin = async (req, res) => {
-
-    
-
-}
-
-export const signout = async (req, res) => {
-
-}
+export const Signout = async (req, res) => {};

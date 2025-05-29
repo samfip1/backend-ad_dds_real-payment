@@ -4,6 +4,7 @@ import { Router } from "express";
 const userrouter = Router();
 
 
+
 userrouter.get("/users", (req, res) => {
     res.send("GET all users");
 

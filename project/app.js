@@ -1,11 +1,13 @@
 import express from 'express';
 import userrouter from './routes/user.routes.js';
-import authrouter from './routes/auth.routes.js';
+
 import subscriptionrouter from './routes/subscription.routes.js';
 import connectDB from './database/mongodb.js';
 
+
 import errorMiddleware from './Middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import authrouter from './routes/auth.routes.js';
 
 const app = express();
 

@@ -10,6 +10,7 @@ subscriptionrouter.get("/subscriptions", (req, res) => {
     });
 });
 
+
 subscriptionrouter.get("/:id", (req, res) => {
     res.send("GET subscription by id");
 

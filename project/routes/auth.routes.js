@@ -1,12 +1,14 @@
 import { Router } from "express";
-import { signin, signout, singup } from "../controllers/auth.controllers";
+
+import { Signin, Signout, Singup } from "../controllers/auth.controllers.js";
+
 
 const authrouter = Router();
 
-authrouter.post("/sign-up", singup)
+authrouter.post("/sign-up", Singup)
 
-authrouter.post("/sign-ip", signin)
+authrouter.post("/sign-ip", Signin)
 
-authrouter.post("/sign-out", signout)
+authrouter.post("/sign-out",Signout)
 
 export default authrouter;

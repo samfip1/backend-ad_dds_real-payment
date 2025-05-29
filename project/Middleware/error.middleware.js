@@ -5,6 +5,7 @@ const errorMiddleware = (err, req, res, next) => {
 
         error.message = err.message;
 
+        
         console.error(err);
 
         if (err.name === "CastError") {
