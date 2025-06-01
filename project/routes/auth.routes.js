@@ -7,7 +7,7 @@ const authrouter = Router();
 
 authrouter.post("/sign-up", Singup)
 
-authrouter.post("/sign-ip", Signin)
+authrouter.post("/sign-in", Signin)
 
 authrouter.post("/sign-out",Signout)
 
